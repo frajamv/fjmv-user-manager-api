@@ -14,7 +14,7 @@ const env_prefix = ['DEV', 'QA', 'PRD'].includes(env.current_environment) ? env.
  */
 env = {
     ...env,
-    port: env[env_prefix + '_port'],
+    port: env.port || env[env_prefix + '_port'],
     DB_HOST: env[env_prefix + '_dbhost'],
     DB_USERNAME: env[env_prefix + '_dbusername'],
     DB_PASSWORD: env[env_prefix + '_dbpassword'],
