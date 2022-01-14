@@ -1,6 +1,7 @@
-const Sequelize = require('sequelize');
-const sql = require('../db/db.config');
-const User = require('./user.model');
+const Sequelize = require('sequelize')
+const sql = require('../db/db.config')
+const env = require('../environment')
+const User = require('./user.model')
 
 /**
  * Defines the model as the table 'user_loggings' in the database. The name has no 's' because it is automatically created with Sequelize.
@@ -26,12 +27,12 @@ const User_logging = sql.define('user_logging', {
     Created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('GETDATE')
+        defaultValue: Sequelize.fn(env.db_current_date())
     },
     Updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('GETDATE')
+        defaultValue: Sequelize.fn(env.db_current_date())
     },
     State: {
         type: Sequelize.ENUM('1', '0'),

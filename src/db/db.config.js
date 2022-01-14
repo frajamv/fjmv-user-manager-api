@@ -2,7 +2,7 @@
 const { Sequelize } = require('sequelize')
 const environment = require('../environment')
 
-const dbms = 'mssql'
+const dbms = environment.CURRENT_DBMS
 
 /**
  * Initialize the MS SQL connection.
@@ -29,12 +29,16 @@ const test_connection = async() => {
  * Synchronize all the models (models folder) to the SQL tables by dropping and re-creating them (Only usable when migrating because of data loss).
  */
 sync = () => {
-    sql.sync({ force: true }).then((value) => {
-        console.log("Successfully connected to", value.options.dialect)
-        console.log("All data has been restored.")
-    })
+    try {
+        sql.sync({ force: true }).then((value) => {
+            console.log("Successfully connected to", value.options.dialect)
+            console.log("All data has been restored.")
+        })
+    } catch (error) {
+        console.log("Error trying to synchronize to database:", error)
+    }
 };
-// sync();
+sync();
 
 /**
  * Export SQL connection.

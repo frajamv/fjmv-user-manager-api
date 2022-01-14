@@ -22,6 +22,15 @@ env = {
     JWT_KEY: env[env_prefix + '_jwtkey']
 }
 
+env.db_current_date = () => {
+    switch (env.CURRENT_DBMS) {
+        case 'mysql':
+            return 'NOW'
+        case 'mssql':
+            return 'GETDATE'
+    }
+}
+
 /**
  * Export all the environment variables to system through dotenv.
  */
