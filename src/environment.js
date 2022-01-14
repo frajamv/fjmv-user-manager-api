@@ -31,6 +31,8 @@ env.db_current_date = () => {
             return 'NOW'
         case 'mssql':
             return 'GETDATE'
+        default:
+            return 'NOW'
     }
 }
 
