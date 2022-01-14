@@ -14,6 +14,7 @@ server.use(express.json()); // Get the API to manage JSON objects for requests a
 // MAIN ROUTES (each file has it's own subroutes):
 server.use('/api/table_test', require('./routes/table_tests.router'));
 server.use('/api/users', require('./routes/users.router'));
+server.use('/', (req, res) => res.send("Hello world! We're finally online!"));
 
 console.log("Connected to database:", env.DB_NAME)
 module.exports = server;
