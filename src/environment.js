@@ -15,12 +15,12 @@ const env_prefix = ['DEV', 'QA', 'PRD'].includes(env.current_environment) ? env.
  */
 env = {
     ...env,
-    port: env.port || env[env_prefix + '_port'],
-    DB_HOST: env[env_prefix + '_dbhost'],
-    DB_USERNAME: env[env_prefix + '_dbusername'],
-    DB_PASSWORD: env[env_prefix + '_dbpassword'],
-    DB_NAME: env[env_prefix + '_dbname'],
-    JWT_KEY: env[env_prefix + '_jwtkey']
+    port: env.port || env[env_prefix + '_PORT'],
+    DB_HOST: env[env_prefix + '_DBHOST'],
+    DB_USERNAME: env[env_prefix + '_DBUSERNAME'],
+    DB_PASSWORD: env[env_prefix + '_DBPASSWORD'],
+    DB_NAME: env[env_prefix + '_DBNAME'],
+    JWT_KEY: env[env_prefix + '_JWTKEY']
 }
 
 console.log(`Current environment: ${env_prefix}.`)
