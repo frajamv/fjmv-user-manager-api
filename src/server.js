@@ -12,7 +12,6 @@ server.use(morgan('dev')) // Get and print all requests method and URI.
 server.use(express.json()); // Get the API to manage JSON objects for requests and responses.
 
 // MAIN ROUTES (each file has it's own subroutes):
-server.use('/api/table_test', require('./routes/table_tests.router'));
 server.use('/api/users', require('./routes/users.router'));
 server.use('/', (req, res) => res.send("Hello world! We're finally online!"));
 
