@@ -1,0 +1,23 @@
+{
+    "development": {
+        "username": "frajam",
+        "password": "awsdemauros",
+        "database": "dev_db_test",
+        "host": "venturit-back-db.cmtgxcw6envj.us-east-2.rds.amazonaws.com",
+        "dialect": "mysql"
+    },
+    "test": {
+        "username": "frajam",
+        "password": "awsdemauros",
+        "database": "dev_db_test",
+        "host": "venturit-back-db.cmtgxcw6envj.us-east-2.rds.amazonaws.com",
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": "frajam",
+        "password": "awsdemauros",
+        "database": "dev_db_test",
+        "host": "venturit-back-db.cmtgxcw6envj.us-east-2.rds.amazonaws.com",
+        "dialect": "mysql"
+    }
+}
