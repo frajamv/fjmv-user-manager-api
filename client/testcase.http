@@ -1,7 +1,9 @@
 @port = 3000
+@host = https://fjmv-user-manager-api.herokuapp.com
+# @host = http://localhost:{{port}}
 
 ### Get all rows from 'users'
-GET https://fjmv-user-manager-api.herokuapp.com/api/users
+GET {{host}}/api/users
 # GET http://localhost:{{port}}/api/users/
 content-type: application/json
 x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjoyLCJGdWxsX25hbWUiOiJKaG9hbiBEYXZpZCBSYW3DrXJleiBHcmFqYWxlcyIsIk5hdGlvbmFsX2lkZW50aWZpZXIiOiIxMTA1NDkwMzc5IiwiRE9CIjoiMTk5NS0xMi0yMCIsIlVzZXJuYW1lIjoiamhvd2FsayIsIlBhc3N3b3JkIjoiJDJiJDEwJFFhV0hlR0FFanVxc01YcFR6emlVRWV3Yi5FNVBpMDBXaE5YVVFxY1J2UlhaTHNrVC9Xbi82IiwiQ3JlYXRlZF9hdCI6IjIwMjItMDEtMTRUMDM6Mjg6NTkuMDAwWiIsIlVwZGF0ZWRfYXQiOiIyMDIyLTAxLTE0VDAzOjI4OjU5LjAwMFoiLCJTdGF0ZSI6IjEifSwiX3ByZXZpb3VzRGF0YVZhbHVlcyI6eyJJZCI6MiwiRnVsbF9uYW1lIjoiSmhvYW4gRGF2aWQgUmFtw61yZXogR3JhamFsZXMiLCJOYXRpb25hbF9pZGVudGlmaWVyIjoiMTEwNTQ5MDM3OSIsIkRPQiI6IjE5OTUtMTItMjAiLCJVc2VybmFtZSI6Impob3dhbGsiLCJQYXNzd29yZCI6IiQyYiQxMCRRYVdIZUdBRWp1cXNNWHBUenppVUVld2IuRTVQaTAwV2hOWFVRcWNSdlJYWkxza1QvV24vNiIsIkNyZWF0ZWRfYXQiOiIyMDIyLTAxLTE0VDAzOjI4OjU5LjAwMFoiLCJVcGRhdGVkX2F0IjoiMjAyMi0wMS0xNFQwMzoyODo1OS4wMDBaIiwiU3RhdGUiOiIxIn0sInVuaXFubyI6MSwiX2NoYW5nZWQiOnt9LCJfb3B0aW9ucyI6eyJpc05ld1JlY29yZCI6ZmFsc2UsIl9zY2hlbWEiOm51bGwsIl9zY2hlbWFEZWxpbWl0ZXIiOiIiLCJyYXciOnRydWUsImF0dHJpYnV0ZXMiOlsiSWQiLCJGdWxsX25hbWUiLCJOYXRpb25hbF9pZGVudGlmaWVyIiwiRE9CIiwiVXNlcm5hbWUiLCJQYXNzd29yZCIsIkNyZWF0ZWRfYXQiLCJVcGRhdGVkX2F0IiwiU3RhdGUiXX0sImlzTmV3UmVjb3JkIjpmYWxzZSwiaWF0IjoxNjQyMTMwOTYyLCJleHAiOjE2NDIxMzEyNjJ9.w6rpMJ8s-sYNP3xsNMOTTxM4W9F8mhAZwOtOR7i0C1s
@@ -10,11 +12,11 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjo
 # }
 
 ### Insert test data for user management.
-POST http://localhost:{{port}}/api/users/testcase
+POST {{host}}/api/users/testcase
 content-type: application/json
 
 ### User authentication
-POST http://localhost:{{port}}/api/users/authenticate
+POST {{host}}/api/users/authenticate
 content-type: application/json
 
 {

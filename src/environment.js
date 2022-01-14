@@ -23,8 +23,7 @@ env = {
 }
 
 console.log(`Current environment: ${env_prefix}.`)
-console.log(`System port: ${process.env.port}.`)
-console.log(`Current port: ${env.port}.`)
+console.log(`Database ${env.DB_NAME} available at: ${env.DB_HOST}.`)
 
 env.db_current_date = () => {
     switch (env.CURRENT_DBMS) {
