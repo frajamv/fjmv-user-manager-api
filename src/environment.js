@@ -24,7 +24,6 @@ env = {
 }
 
 console.log(`Current environment: ${env_prefix}.`)
-console.log(`Database ${env.DB_NAME} available at: ${env.DB_HOST}.`)
 
 env.db_current_date = () => {
     switch (env.CURRENT_DBMS) {
