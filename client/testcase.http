@@ -1,0 +1,28 @@
+@port = 3000
+
+### Get all rows from 'users'
+GET http://localhost:{{port}}/api/users/
+content-type: application/json
+x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjoxLCJGdWxsX25hbWUiOiJGcmFuY2lzY28gSmF2aWVyIE1hcnTDrW5leiBWYXJnYXMiLCJOYXRpb25hbF9pZGVudGlmaWVyIjoiMTEwNzUyMjEwMiIsIkRPQiI6IjE5OTgtMDEtMjYiLCJVc2VybmFtZSI6ImZyYWphbSIsIlBhc3N3b3JkIjoiJDJiJDEwJFlnSzVhQjFjMUFKdi52Z296NFFSRnVBUkpyMk5TSUhZMWNMZlRLajBqM0liWVJUeTZpMHJDIiwiQ3JlYXRlZF9hdCI6IjIwMjItMDEtMTNUMDI6MzI6MDIuMTMwWiIsIlVwZGF0ZWRfYXQiOiIyMDIyLTAxLTEzVDAyOjMyOjAyLjEzMFoiLCJTdGF0ZSI6IjEifSwiX3ByZXZpb3VzRGF0YVZhbHVlcyI6eyJJZCI6MSwiRnVsbF9uYW1lIjoiRnJhbmNpc2NvIEphdmllciBNYXJ0w61uZXogVmFyZ2FzIiwiTmF0aW9uYWxfaWRlbnRpZmllciI6IjExMDc1MjIxMDIiLCJET0IiOiIxOTk4LTAxLTI2IiwiVXNlcm5hbWUiOiJmcmFqYW0iLCJQYXNzd29yZCI6IiQyYiQxMCRZZ0s1YUIxYzFBSnYudmdvejRRUkZ1QVJKcjJOU0lIWTFjTGZUS2owajNJYllSVHk2aTByQyIsIkNyZWF0ZWRfYXQiOiIyMDIyLTAxLTEzVDAyOjMyOjAyLjEzMFoiLCJVcGRhdGVkX2F0IjoiMjAyMi0wMS0xM1QwMjozMjowMi4xMzBaIiwiU3RhdGUiOiIxIn0sInVuaXFubyI6MSwiX2NoYW5nZWQiOnt9LCJfb3B0aW9ucyI6eyJpc05ld1JlY29yZCI6ZmFsc2UsIl9zY2hlbWEiOm51bGwsIl9zY2hlbWFEZWxpbWl0ZXIiOiIiLCJyYXciOnRydWUsImF0dHJpYnV0ZXMiOlsiSWQiLCJGdWxsX25hbWUiLCJOYXRpb25hbF9pZGVudGlmaWVyIiwiRE9CIiwiVXNlcm5hbWUiLCJQYXNzd29yZCIsIkNyZWF0ZWRfYXQiLCJVcGRhdGVkX2F0IiwiU3RhdGUiXX0sImlzTmV3UmVjb3JkIjpmYWxzZSwiaWF0IjoxNjQyMDU5MTI1LCJleHAiOjE2NzM1OTUxMjV9.F1S1ubemnJ8kHpWYUZYQlawZIzi121_9PewyBVUy4YI
+
+### Insert one table_test
+POST http://localhost:{{port}}/api/users
+content-type: application/json
+
+{
+    "Full_name": "Jhoan David Ramírez Grajales",
+    "National_identifier": "1105490379",
+    "DOB": "1995-12-20",
+    "Username": "jhowalk",
+    "Password": "Megustanfeas"
+}
+
+### User authentication
+POST http://localhost:{{port}}/api/users/authenticate
+content-type: application/json
+
+{
+    "Username": "jhowalk",
+    "Password": "Megustanfeas"
+}
+
