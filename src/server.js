@@ -16,5 +16,4 @@ server.use('/api/table_test', require('./routes/table_tests.router'));
 server.use('/api/users', require('./routes/users.router'));
 server.use('/', (req, res) => res.send("Hello world! We're finally online!"));
 
-console.log("Connected to database:", env.DB_NAME)
 module.exports = server;

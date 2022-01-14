@@ -22,6 +22,10 @@ env = {
     JWT_KEY: env[env_prefix + '_jwtkey']
 }
 
+console.log(`Current environment: ${env_prefix}.`)
+console.log(`System port: ${process.env.port}.`)
+console.log(`Current port: ${env.port}.`)
+
 env.db_current_date = () => {
     switch (env.CURRENT_DBMS) {
         case 'mysql':

@@ -38,7 +38,7 @@ sync = () => {
         console.log("Error trying to synchronize to database:", error)
     }
 };
-sync();
+// sync();
 
 /**
  * Export SQL connection.
