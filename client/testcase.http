@@ -1,6 +1,6 @@
-@port = 3000
-@host = https://fjmv-user-manager-api.herokuapp.com
-# @host = http://localhost:{{port}}
+@port = 80
+# @host = https://fjmv-user-manager-api.herokuapp.com
+@host = http://localhost:{{port}}
 
 ### Get all rows from 'users'
 GET {{host}}/api/users
@@ -22,3 +22,7 @@ content-type: application/json
     "Username": "frajam",
     "Password": "Qlonas4thewin123"
 }
+
+### User authentication
+GET {{host}}/api/users/log
+content-type: application/json

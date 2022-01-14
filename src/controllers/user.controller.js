@@ -6,7 +6,8 @@ const bcrypt = require('bcrypt');
 const salt_rounds = 10;
 const User = require('../models/user.model')
 const User_role = require('../models/user_role.model')
-const Role = require('../models/role.model')
+const Role = require('../models/role.model');
+const User_logging = require('../models/user_logging.model');
 
 /**
  * Module controller that resolves all the user requests.
@@ -48,6 +49,42 @@ controller.getAllUsers = async(req, res) => {
 }
 
 /**
+ * Returns all rows from 'user_activity_logs' table in MS SQL Server database.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.getUserLogs = async(req, res) => {
+    try {
+        const found = await User_logging.findAll({
+            attributes: {
+                exclude: ['Password'] // Don't return user password.
+            },
+            include: { // Bring related 'users' rows.
+                model: User,
+                include: { // Bring related 'roles' rows.
+                    model: Role,
+                    attributes: ['Description'], // Only need the role 'Description' field.
+                },
+                attributes: {
+                    exclude: ['Password']
+                }, // Only need the role 'Description' field.
+            }
+        })
+
+        // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
+        data = parseSQLData(found)
+        for (const log of data) {
+            log.user.roles = log.user.roles.map(r => r.Description)
+        }
+
+        return parseSuccessOK(res, data)
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
  * Verifies if the credentials passed in the body match correctly with a registered user in the DB.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
@@ -75,7 +112,6 @@ controller.authenticate = async(req, res) => {
             return parseError(res, 404, `The username ${credentials.Username} is not registered.`)
 
         const correct_password = await _comparePasswords(credentials.Password, found[0].Password)
-
         if (correct_password) {
             delete found[0].Password
             const token = jwt.sign({
@@ -85,17 +121,16 @@ controller.authenticate = async(req, res) => {
                     expiresIn: '300s',
                 }
             );
-
             const payload = {
                 status: 'OK',
                 token: token
             }
 
+            _createUserLog('Login', found[0].Id)
             return parseSuccessOK(res, payload)
         }
 
         return parseError(res, 400, "Wrong password.")
-
     } catch (error) {
         console.log(error)
         return parseError(res, 500, error)
@@ -125,6 +160,8 @@ controller.registerUser = async(req, res) => {
 
         const addition = await User.create(payload)
         if (addition) return parseSuccess(res, 201, 'User successfully created.')
+
+        _createUserLog('Register', addition.Id)
         return parseError(res, 304, 'No changes were made.')
     } catch (error) {
         return parseError(res, 500, error)
@@ -193,11 +230,36 @@ controller.fillTestUsers = async(req, res) => {
                 const role_assignation = await User_role.create({ userId: user_addition.Id, roleId: found_role[0].Id })
                 if (!role_assignation) return parseError(res, 304, `No changes were made trying to assignate the role ${role} to ${payload.Full_name}.`)
             }
+
+            _createUserLog('Register', user_addition.Id)
         }
         return parseSuccessOK(res, "Test users with roles were added successfully.")
     } catch (error) {
         console.log(error)
         return parseError(res, 304, `No changes were made: ${error}.`)
+    }
+}
+
+/**
+ * Creates a user_activity_log row for the provided action performed by the user.
+ * @param {*} action_performed Action performed by user
+ * @param {*} user_id User unique identifier
+ */
+const _createUserLog = async(action_performed, user_id) => {
+    try {
+        payload = {
+            Action_performed: action_performed,
+            userId: user_id
+        }
+
+        if (!payload.Action_performed || !payload.userId)
+            throw new Error('Action performed or user identifier is null')
+
+        const addition = await User_logging.create(payload)
+        if (!addition)
+            throw new Error('Could not add user log. No changes were made.')
+    } catch (error) {
+        throw new Error(`${error}`)
     }
 }
 

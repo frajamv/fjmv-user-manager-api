@@ -2,7 +2,7 @@
 const { Sequelize } = require('sequelize')
 const environment = require('../environment')
 
-const dbms = environment.CURRENT_DBMS
+const dbms = environment.CURRENT_DBMS || 'mysql'
 
 /**
  * Initialize the MS SQL connection.
