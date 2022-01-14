@@ -1,3 +1,4 @@
+require('dotenv').config();
 /**
  * Get all the .env file data.
  */
