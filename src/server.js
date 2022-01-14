@@ -4,7 +4,7 @@ const morgan = require('morgan')
 const server = express();
 const env = require('./environment') // Get data from environment.js file.
 
-server.set('port', env.port || 4000);
+server.set('port', env.PORT || 80);
 
 // MIDDLEWARES:
 server.use(cors()); // Allow server to be accesible from other applications.
