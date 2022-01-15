@@ -9,7 +9,8 @@ const user = require('../controllers/user.controller')
  * Resolves all the endpoints related to users requests.
  */
 router.route('/')
-    .get(auth, user.getAllUsers)
+    // .get(auth, user.getAllUsers) Token disabled for dev testing.
+    .get(user.getAllUsers)
     .post(user.registerUser)
 
 /**
