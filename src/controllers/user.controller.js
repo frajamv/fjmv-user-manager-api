@@ -159,9 +159,10 @@ controller.registerUser = async(req, res) => {
         payload.Password = hashed_password
 
         const addition = await User.create(payload)
-        if (addition) return parseSuccess(res, 201, 'User successfully created.')
-
-        _createUserLog('Register', addition.Id)
+        if (addition) {
+            _createUserLog('Register', addition.Id)
+            return parseSuccess(res, 201, { message: 'User successfully created.' })
+        }
         return parseError(res, 304, 'No changes were made.')
     } catch (error) {
         return parseError(res, 500, error)
