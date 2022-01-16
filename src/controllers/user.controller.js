@@ -49,6 +49,30 @@ controller.getAllUsers = async(req, res) => {
 }
 
 /**
+ * Deletes a row from 'user' table in MS SQL Server database that has the id provided.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.deleteUser = async(req, res) => {
+    try {
+        const id = req.params.id
+        const deleted = await User.destroy({
+            where: {
+                Id: id
+            }
+        })
+
+        if (!deleted)
+            return parseError(res, 500, 'No changes were made.')
+
+        return parseSuccessOK(res, { message: 'User deleted.', data: deleted })
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
  * Returns all rows from 'user_activity_logs' table in MS SQL Server database.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
@@ -80,6 +104,38 @@ controller.getUserLogs = async(req, res) => {
         return parseSuccessOK(res, data)
     } catch (error) {
         console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
+ * Creates a new row for the table 'users'.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.registerUser = async(req, res) => {
+    try {
+        payload = {
+            Full_name: req.body.Full_name,
+            National_identifier: req.body.National_identifier,
+            DOB: req.body.DOB,
+            Username: req.body.Username,
+            Password: req.body.Password
+        }
+
+        if (!payload.Full_name || !payload.National_identifier || !payload.DOB || !payload.Username || !payload.Password)
+            return parseError(res, 400, 'Please insert all fields for the new user.')
+
+        const hashed_password = await _generateHashedPassword(payload.Password)
+        payload.Password = hashed_password
+
+        const addition = await User.create(payload)
+        if (addition) {
+            _createUserLog('Register', addition.Id)
+            return parseSuccess(res, 201, { message: 'User successfully created.' })
+        }
+        return parseError(res, 304, 'No changes were made.')
+    } catch (error) {
         return parseError(res, 500, error)
     }
 }
@@ -133,38 +189,6 @@ controller.authenticate = async(req, res) => {
         return parseError(res, 400, "Wrong password.")
     } catch (error) {
         console.log(error)
-        return parseError(res, 500, error)
-    }
-}
-
-/**
- * Creates a new row for the table 'users'.
- * @param {*} req HTTP request
- * @param {*} res HTTP response
- */
-controller.registerUser = async(req, res) => {
-    try {
-        payload = {
-            Full_name: req.body.Full_name,
-            National_identifier: req.body.National_identifier,
-            DOB: req.body.DOB,
-            Username: req.body.Username,
-            Password: req.body.Password
-        }
-
-        if (!payload.Full_name || !payload.National_identifier || !payload.DOB || !payload.Username || !payload.Password)
-            return parseError(res, 400, 'Please insert all fields for the new user.')
-
-        const hashed_password = await _generateHashedPassword(payload.Password)
-        payload.Password = hashed_password
-
-        const addition = await User.create(payload)
-        if (addition) {
-            _createUserLog('Register', addition.Id)
-            return parseSuccess(res, 201, { message: 'User successfully created.' })
-        }
-        return parseError(res, 304, 'No changes were made.')
-    } catch (error) {
         return parseError(res, 500, error)
     }
 }

@@ -5,6 +5,13 @@ const auth = require('../middlewares/auth')
 const user = require('../controllers/user.controller')
 
 /**
+ * http://host:port/api/users/:id
+ * Resolves all the endpoints related to a single user requests..
+ */
+router.route('/:id')
+    .delete(user.deleteUser)
+
+/**
  * http://host:port/api/users
  * Resolves all the endpoints related to users requests.
  */
