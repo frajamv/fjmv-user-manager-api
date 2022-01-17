@@ -123,6 +123,7 @@ controller.registerUser = async(req, res) => {
             Password: req.body.Password
         }
 
+        console.log("Whole request body:", req.body)
         console.log("Inserting new user:", payload)
 
         if (!payload.Full_name || !payload.National_identifier || !payload.DOB || !payload.Username || !payload.Password)
