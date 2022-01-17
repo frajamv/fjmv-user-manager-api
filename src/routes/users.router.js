@@ -28,6 +28,15 @@ router.route('/authenticate')
     .post(user.authenticate)
 
 /**
+ * http://host:port/api/users/role
+ * Resolves all the endpoints related to user session requests.
+ */
+router.route('/role')
+    .get(user.getAllRoles)
+    .post(user.assignRoleToUser)
+    .delete(user.deassignRoleToUser)
+
+/**
  * http://host:port/api/users/log/:id
  * Resolves all the endpoints related to user logging.
  */
