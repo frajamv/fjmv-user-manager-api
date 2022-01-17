@@ -112,7 +112,9 @@ controller.getAllUsers = async(req, res) => {
         if (role_filters)
             data = data.filter(user => user.roles.some(role => role_filters.includes(role.Description)))
         for (const user of data) {
-            user.roles = user.roles.map(r => r.Description)
+            const roles = user.roles
+            user.roles = roles.map(r => r.Description)
+            user.roles_array = roles
         }
 
         return parseSuccessOK(res, data)
