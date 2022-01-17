@@ -102,7 +102,7 @@ controller.getAllUsers = async(req, res) => {
             },
             include: { // Bring related 'roles' rows.
                 model: Role,
-                attributes: ['Description'], // Only need the role 'Description' field.
+                attributes: ['Id', 'Description'], // Only need the role 'Description' field.
             }
         })
 
@@ -114,7 +114,7 @@ controller.getAllUsers = async(req, res) => {
         for (const user of data) {
             const roles = user.roles
             user.roles = roles.map(r => r.Description)
-            user.roles_array = roles
+            user.roles_array = roles.map(r => { return { Description: r.Description, Id: r.Id } })
         }
 
         return parseSuccessOK(res, data)
