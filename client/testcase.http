@@ -1,6 +1,6 @@
 @port = 80
-# @host = https://fjmv-user-manager-api.herokuapp.com
-@host = http://localhost:{{port}}
+@host = https://fjmv-user-manager-api.herokuapp.com
+# @host = http://localhost:{{port}}
 
 ### Get all rows from 'users'
 GET {{host}}/api/users
@@ -9,6 +9,18 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjo
 # {
 #     "roles": ["Admin"]
 # }
+
+### Get all rows from 'users'
+POST {{host}}/api/users
+content-type: application/json
+
+{
+    "Full_name": "req.body.Full_name",
+    "National_identifier": "req.body.National_identifier",
+    "DOB": "req.body.DOB",
+    "Username": "req.body.Username",
+    "Password": "req.body.Password"
+}
 
 ### Insert test data for user management.
 POST {{host}}/api/users/testcase
