@@ -98,7 +98,8 @@ controller.getUserLogs = async(req, res) => {
         // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
         data = parseSQLData(found)
         for (const log of data) {
-            log.user.roles = log.user.roles.map(r => r.Description)
+            console.log("Current log row:", log)
+            if (log.user && log.user.roles) log.user.roles = log.user.roles.map(r => r.Description)
         }
 
         return parseSuccessOK(res, data)
