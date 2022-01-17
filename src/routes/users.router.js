@@ -28,6 +28,13 @@ router.route('/authenticate')
     .post(user.authenticate)
 
 /**
+ * http://host:port/api/users/log/:id
+ * Resolves all the endpoints related to user logging.
+ */
+router.route('/log/:id')
+    .get(user.getSingleUserLogs)
+
+/**
  * http://host:port/api/users/log
  * Resolves all the endpoints related to user logging.
  */

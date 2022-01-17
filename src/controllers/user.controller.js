@@ -109,6 +109,46 @@ controller.getUserLogs = async(req, res) => {
 }
 
 /**
+ * Returns all rows from 'user_activity_logs' table in MS SQL Server database.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.getSingleUserLogs = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const found = await User_logging.findAll({
+            where: {
+                userId: id
+            },
+            attributes: {
+                exclude: ['Password'] // Don't return user password.
+            },
+            include: { // Bring related 'users' rows.
+                model: User,
+                include: { // Bring related 'roles' rows.
+                    model: Role,
+                    attributes: ['Description'], // Only need the role 'Description' field.
+                },
+                attributes: {
+                    exclude: ['Password']
+                }, // Only need the role 'Description' field.
+            }
+        })
+
+        // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
+        data = parseSQLData(found)
+        for (const log of data) {
+            if (log.user && log.user.roles) log.user.roles = log.user.roles.map(r => r.Description)
+        }
+
+        return parseSuccessOK(res, data)
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
  * Creates a new row for the table 'users'.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
