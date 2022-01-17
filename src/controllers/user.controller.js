@@ -57,6 +57,55 @@ controller.assignRoleToUser = async(req, res) => {
 }
 
 /**
+ * Creates a new row for the table 'users'.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.setUserRoles = async(req, res) => {
+    try {
+        payload = {
+            userId: req.body.userId,
+            roles: req.body.roles
+        }
+
+        if (!payload.userId || !payload.roles)
+            return parseError(res, 400, 'Please select a user and the roles to set.')
+
+        const deletion = await User_role.destroy({
+            where: {
+                userId: payload.userId
+            }
+        })
+        if (!deletion) {
+            return parseError(res, 304, 'Could not remove the current roles.')
+        }
+
+        const found_roles = await Role.findAll({
+            where: {
+                Description: payload.roles
+            }
+        });
+        if (!found_roles) return parseError(res, 304, 'Roles not found.')
+
+        const role_ids = found_roles.map(r => {
+            return {
+                roleId: r.Id,
+                userId: payload.userId
+            }
+        })
+        const role_assignments = await User_role.bulkCreate(role_ids)
+        if (role_assignments) {
+            _createDetailedUserLog('Role', `Roles ${payload.roles.join(', ')} assigned to user.`, payload.userId)
+            return parseSuccessOK(res, 'All roles were assigned to user.')
+        }
+
+        return parseError(res, 400, 'Roles not assigned')
+    } catch (error) {
+        return parseError(res, 500, error)
+    }
+}
+
+/**
  * Deletes a row from 'user' table in MS SQL Server database that has the id provided.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
@@ -81,7 +130,7 @@ controller.deassignRoleToUser = async(req, res) => {
             _createUserLog('Role', payload.userId)
             return parseSuccess(res, 201, { message: 'User role successfully deassigned.' })
         }
-        // return parseError(res, 304, 'No changes were made.')
+        return parseError(res, 304, 'No changes were made.')
     } catch (error) {
         console.log("Error:", error)
         return parseError(res, 500, error)
@@ -378,6 +427,30 @@ controller.fillTestUsers = async(req, res) => {
     } catch (error) {
         console.log(error)
         return parseError(res, 304, `No changes were made: ${error}.`)
+    }
+}
+
+/**
+ * Creates a user_activity_log row for the provided action performed by the user.
+ * @param {*} action_performed Action performed by user
+ * @param {*} user_id User unique identifier
+ */
+const _createDetailedUserLog = async(action_performed, details, user_id) => {
+    try {
+        payload = {
+            Action_performed: action_performed,
+            userId: user_id,
+            Description: details
+        }
+
+        if (!payload.Action_performed || !payload.userId || !payload.Description)
+            throw new Error('Action performed, Description or user identifier is null')
+
+        const addition = await User_logging.create(payload)
+        if (!addition)
+            throw new Error('Could not add user log. No changes were made.')
+    } catch (error) {
+        throw new Error(`${error}`)
     }
 }
 

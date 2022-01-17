@@ -35,6 +35,7 @@ router.route('/role')
     .get(user.getAllRoles)
     .post(user.assignRoleToUser)
     .patch(user.deassignRoleToUser)
+    .put(user.setUserRoles)
 
 /**
  * http://host:port/api/users/log/:id

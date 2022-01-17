@@ -11,6 +11,17 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjo
 # }
 
 ### Get all rows from 'users'
+PUT {{host}}/api/users/role
+content-type: application/json
+
+{
+    "userId": "51",
+    "roles": [
+        "User", "Root", "Admin"
+    ]
+}
+
+### Get all rows from 'users'
 PATCH {{host}}/api/users/role
 content-type: application/json
 
