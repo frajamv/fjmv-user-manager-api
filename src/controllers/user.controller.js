@@ -98,7 +98,6 @@ controller.getUserLogs = async(req, res) => {
         // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
         data = parseSQLData(found)
         for (const log of data) {
-            console.log("Current log row:", log)
             if (log.user && log.user.roles) log.user.roles = log.user.roles.map(r => r.Description)
         }
 
@@ -131,7 +130,7 @@ controller.registerUser = async(req, res) => {
         payload.Password = hashed_password
 
         const addition = await User.create(payload)
-        if (addition) {
+        if (addition && addition.Id) {
             _createUserLog('Register', addition.Id)
             return parseSuccess(res, 201, { message: 'User successfully created.' })
         }
