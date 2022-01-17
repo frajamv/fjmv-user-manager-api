@@ -19,6 +19,80 @@ controller = {}
  * @param {*} req HTTP request
  * @param {*} res HTTP response
  */
+controller.getAllRoles = async(req, res) => {
+    try {
+        const found = await Role.findAll()
+        data = parseSQLData(found)
+        return parseSuccessOK(res, data)
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
+ * Creates a new row for the table 'users'.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.assignRoleToUser = async(req, res) => {
+    try {
+        payload = {
+            userId: req.body.userId,
+            roleId: req.body.roleId
+        }
+
+        if (!payload.userId || !payload.roleId)
+            return parseError(res, 400, 'Please select a user and a role.')
+
+        const addition = await User_role.create(payload)
+        if (addition && addition.Id) {
+            _createUserLog('Role', payload.userId)
+            return parseSuccess(res, 201, { message: 'User role successfully assigned.' })
+        }
+        return parseError(res, 304, 'No changes were made.')
+    } catch (error) {
+        return parseError(res, 500, error)
+    }
+}
+
+/**
+ * Deletes a row from 'user' table in MS SQL Server database that has the id provided.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.deassignRoleToUser = async(req, res) => {
+    try {
+        payload = {
+            userId: req.body.userId,
+            roleId: req.body.roleId
+        }
+
+        if (!payload.userId || !payload.roleId)
+            return parseError(res, 400, 'Please select a user and a role.')
+
+        const deletion = await User_role.destroy({
+            where: {
+                userId: payload.userId,
+                roleId: payload.roleId
+            }
+        })
+        if (deletion) {
+            _createUserLog('Role', payload.userId)
+            return parseSuccess(res, 201, { message: 'User role successfully assigned.' })
+        }
+        return parseError(res, 304, 'No changes were made.')
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
+ * Returns all rows from 'user' table in MS SQL Server database.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
 controller.getAllUsers = async(req, res) => {
     try {
         const role_filters = req.body.roles
