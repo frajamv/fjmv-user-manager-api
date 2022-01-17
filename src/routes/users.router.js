@@ -34,7 +34,7 @@ router.route('/authenticate')
 router.route('/role')
     .get(user.getAllRoles)
     .post(user.assignRoleToUser)
-    .delete(user.deassignRoleToUser)
+    .patch(user.deassignRoleToUser)
 
 /**
  * http://host:port/api/users/log/:id

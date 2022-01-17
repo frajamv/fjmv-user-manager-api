@@ -79,9 +79,9 @@ controller.deassignRoleToUser = async(req, res) => {
         })
         if (deletion) {
             _createUserLog('Role', payload.userId)
-            return parseSuccess(res, 201, { message: 'User role successfully assigned.' })
+            return parseSuccess(res, 201, { message: 'User role successfully deassigned.' })
         }
-        return parseError(res, 304, 'No changes were made.')
+        // return parseError(res, 304, 'No changes were made.')
     } catch (error) {
         console.log("Error:", error)
         return parseError(res, 500, error)
