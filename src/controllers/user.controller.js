@@ -174,6 +174,38 @@ controller.getAllUsers = async(req, res) => {
 }
 
 /**
+ * Returns all rows from 'user' table in MS SQL Server database.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.getOneUser = async(req, res) => {
+    try {
+        const userId = req.body.userId
+        const found = await User.findByPk(userId, {
+            attributes: {
+                exclude: ['Password'] // Don't return user password.
+            },
+            include: { // Bring related 'roles' rows.
+                model: Role,
+                attributes: ['Id', 'Description'], // Only need the role 'Description' field.
+            }
+        })
+
+        // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
+        user = parseSQLData(found)
+
+        const roles = user.roles
+        user.roles = roles.map(r => r.Description)
+        user.roles_array = roles.map(r => { return { Description: r.Description, Id: r.Id } })
+
+        return parseSuccessOK(res, user)
+    } catch (error) {
+        console.log("Error:", error)
+        return parseError(res, 500, error)
+    }
+}
+
+/**
  * Deletes a row from 'user' table in MS SQL Server database that has the id provided.
  * @param {*} req HTTP request
  * @param {*} res HTTP response
