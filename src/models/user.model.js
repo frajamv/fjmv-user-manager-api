@@ -31,6 +31,10 @@ const User = sql.define("user", {
         type: Sequelize.STRING,
         allowNull: false
     },
+    Image_b64: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
     Created_at: {
         type: Sequelize.DATE,
         allowNull: false,
