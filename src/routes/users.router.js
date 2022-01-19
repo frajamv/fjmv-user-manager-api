@@ -9,7 +9,7 @@ const user = require('../controllers/user.controller')
  * Resolves all the endpoints related to a single user requests..
  */
 router.route('/:id')
-    .post(user.getOneUser)
+    .get(user.getOneUser)
     .delete(user.deleteUser)
 
 /**
