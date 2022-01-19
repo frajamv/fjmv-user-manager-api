@@ -180,7 +180,7 @@ controller.getAllUsers = async(req, res) => {
  */
 controller.getOneUser = async(req, res) => {
     try {
-        const userId = req.body.userId
+        const userId = req.params.id
         const found = await User.findByPk(userId, {
             attributes: {
                 exclude: ['Password'] // Don't return user password.
