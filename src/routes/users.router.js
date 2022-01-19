@@ -8,7 +8,7 @@ const user = require('../controllers/user.controller')
  * http://host:port/api/users/:id
  * Resolves all the endpoints related to a single user requests..
  */
-router.route('/:id')
+router.route('/find/:id')
     .get(user.getOneUser)
     .delete(user.deleteUser)
 

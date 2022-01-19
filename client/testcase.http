@@ -15,7 +15,7 @@ GET {{host}}/api/users/1
 content-type: application/json
 
 ### Get all rows from 'users'
-PUT {{host}}/api/users/role
+GET {{host}}/api/users/role
 content-type: application/json
 
 {
