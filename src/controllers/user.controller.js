@@ -234,7 +234,12 @@ controller.getOneUser = async(req, res) => {
 
         const roles = user.roles
         user.roles = roles.map(r => r.Description)
-        user.roles_array = roles
+        user.roles_array = roles.map(r => {
+            return {
+                Description: r.Description,
+                permissions: r.permissions.map(rp => rp.Title + '-$-' + rp.Details)
+            }
+        })
 
         return parseSuccessOK(res, user)
     } catch (error) {
