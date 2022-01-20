@@ -30,6 +30,12 @@ controller.getAllRoles = async(req, res) => {
             }
         })
         data = parseSQLData(found)
+        data = data.map(role => {
+            return {
+                ...role,
+                permissions: role.permissions.map(p => p.Title + '-&-' + p.Details)
+            }
+        })
         return parseSuccessOK(res, data)
     } catch (error) {
         console.log("Error:", error)

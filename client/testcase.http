@@ -1,6 +1,6 @@
 @port = 80
-# @host = https://fjmv-user-manager-api.herokuapp.com
-@host = http://localhost:{{port}}
+@host = https://fjmv-user-manager-api.herokuapp.com
+# @host = http://localhost:{{port}}
 
 ### Get all rows from 'users'
 GET {{host}}/api/users
