@@ -15,6 +15,11 @@ const Role = sql.define("role", {
         type: Sequelize.STRING,
         allowNull: false
     },
+    Permissions: {
+        type: Sequelize.ENUM('Users management', 'Roles management', 'System variables', 'Database monitoring', 'Basic usage', 'Root'),
+        allowNull: false,
+        defaultValue: 'User'
+    },
     Created_at: {
         type: Sequelize.DATE,
         allowNull: false,
