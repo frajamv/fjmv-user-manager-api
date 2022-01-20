@@ -11,7 +11,7 @@ x-access-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhVmFsdWVzIjp7IklkIjo
 # }
 
 ### Get all rows from 'users'
-GET {{host}}/api/users/1
+GET {{host}}/api/users/find/1
 content-type: application/json
 
 ### Get all rows from 'users'

@@ -8,6 +8,8 @@ const User = require('../models/user.model')
 const User_role = require('../models/user_role.model')
 const Role = require('../models/role.model');
 const User_logging = require('../models/user_logging.model');
+const Permission = require('../models/permission.model');
+const Role_permission = require('../models/role_permission.model');
 
 /**
  * Module controller that resolves all the user requests.
@@ -21,7 +23,12 @@ controller = {}
  */
 controller.getAllRoles = async(req, res) => {
     try {
-        const found = await Role.findAll()
+        const found = await Role.findAll({
+            include: {
+                model: Permission,
+                attributes: ['Title', 'Details'],
+            }
+        })
         data = parseSQLData(found)
         return parseSuccessOK(res, data)
     } catch (error) {
@@ -49,6 +56,31 @@ controller.assignRoleToUser = async(req, res) => {
         if (addition && addition.Id) {
             _createUserLog('Role', payload.userId)
             return parseSuccess(res, 201, { message: 'User role successfully assigned.' })
+        }
+        return parseError(res, 304, 'No changes were made.')
+    } catch (error) {
+        return parseError(res, 500, error)
+    }
+}
+
+/**
+ * Creates a new row for the table 'users'.
+ * @param {*} req HTTP request
+ * @param {*} res HTTP response
+ */
+controller.assignPermissionToRole = async(req, res) => {
+    try {
+        payload = {
+            permissionId: req.body.permissionId,
+            roleId: req.body.roleId
+        }
+
+        if (!payload.permissionId || !payload.roleId)
+            return parseError(res, 400, 'Please select a permission and a role.')
+
+        const addition = await Role_permission.create(payload)
+        if (addition && addition.Id) {
+            return parseSuccess(res, 201, { message: 'Role permission successfully assigned.' })
         }
         return parseError(res, 304, 'No changes were made.')
     } catch (error) {
@@ -188,15 +220,21 @@ controller.getOneUser = async(req, res) => {
             include: { // Bring related 'roles' rows.
                 model: Role,
                 attributes: ['Id', 'Description'], // Only need the role 'Description' field.
+                include: {
+                    model: Permission,
+                    attributes: ['Title', 'Details'],
+                }
             }
         })
 
         // Obligatory: Convert Sequelize data to JSON object when having to treat some attributes as below.
+        if (!found) return parseError(res, 404, 'User not found.')
+
         user = parseSQLData(found)
 
         const roles = user.roles
         user.roles = roles.map(r => r.Description)
-        user.roles_array = roles.map(r => { return { Description: r.Description, Id: r.Id } })
+        user.roles_array = roles
 
         return parseSuccessOK(res, user)
     } catch (error) {

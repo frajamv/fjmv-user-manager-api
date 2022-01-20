@@ -13,6 +13,7 @@ server.use(express.json()); // Get the API to manage JSON objects for requests a
 
 // MAIN ROUTES (each file has it's own subroutes):
 server.use('/api/users', require('./routes/users.router'));
+server.use('/api/roles', require('./routes/roles.router'));
 server.use('/', (req, res) => res.send("Hello world! We're finally online!"));
 
 module.exports = server;

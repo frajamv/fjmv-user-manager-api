@@ -1,19 +1,25 @@
 const Sequelize = require("sequelize")
 const sql = require('../db/db.config')
 const env = require('../environment')
+const Role = require("./role.model")
 
 /**
  * Defines the model as the table 'roles' in the database. The name has no 's' because it is automatically created with Sequelize.
  */
-const Role = sql.define("role", {
+const Permission = sql.define("permission", {
     Id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    Description: {
+    Title: {
+        type: Sequelize.ENUM('Users management', 'Roles management', 'System variables', 'Database monitoring', 'Basic usage', 'Root'),
+        allowNull: false,
+        defaultValue: 'Basic usage'
+    },
+    Details: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
     },
     Created_at: {
         type: Sequelize.DATE,
@@ -29,5 +35,4 @@ const Role = sql.define("role", {
     timestamps: false
 });
 
-
-module.exports = Role
+module.exports = Permission
