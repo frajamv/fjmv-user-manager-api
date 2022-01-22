@@ -416,23 +416,23 @@ controller.authenticate = async(req, res) => {
             }
         })
 
+        let user = parseSQLData(found[0])
+
         // As SQL Server Collation is case insensitive, username 'Abc' is equal to 'abc'. So the case
         // must be compared through JS for username.
-        if (!found[0] || found[0].Username !== credentials.Username)
+        if (!user || user.Username !== credentials.Username)
             return parseError(res, 404, { status: `The username ${credentials.Username} is not registered.` })
 
-        const correct_password = await _comparePasswords(credentials.Password, found[0].Password)
+        const correct_password = await _comparePasswords(credentials.Password, user.Password)
         if (correct_password) {
-            delete found[0].Password
+            delete user.Password
             const token = jwt.sign({
-                    ...found[0]
+                    ...user
                 },
                 env.JWT_KEY, {
                     expiresIn: '300s',
                 }
             );
-
-            user = parseSQLData(found[0])
 
             const roles = user.roles
             user.roles = roles.map(r => r.Description)
@@ -449,7 +449,7 @@ controller.authenticate = async(req, res) => {
                 token: token
             }
 
-            _createUserLog('Login', found[0].Id)
+            _createUserLog('Login', user.Id)
             return parseSuccessOK(res, payload)
         }
 
