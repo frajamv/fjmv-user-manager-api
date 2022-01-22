@@ -436,7 +436,7 @@ controller.authenticate = async(req, res) => {
             status: 'Wrong password.',
         }
 
-        return parseError(res, 400, "Wrong password.")
+        return parseError(res, 400, payload)
     } catch (error) {
         console.log(error)
         return parseError(res, 500, error)
