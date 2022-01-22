@@ -425,6 +425,7 @@ controller.authenticate = async(req, res) => {
             );
             const payload = {
                 status: 'Welcome back!',
+                userId: found[0].Id,
                 token: token
             }
 
