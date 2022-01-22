@@ -399,7 +399,7 @@ controller.authenticate = async(req, res) => {
         }
 
         if (!credentials.Username || !credentials.Password)
-            return parseError(res, 400, 'Provide Username and Password for authentication.')
+            return parseError(res, 400, { status: 'Provide Username and Password for authentication.' })
 
         const found = await User.findAll({
             where: {
@@ -411,7 +411,7 @@ controller.authenticate = async(req, res) => {
         // As SQL Server Collation is case insensitive, username 'Abc' is equal to 'abc'. So the case
         // must be compared through JS for username.
         if (!found[0] || found[0].Username !== credentials.Username)
-            return parseError(res, 404, `The username ${credentials.Username} is not registered.`)
+            return parseError(res, 404, { status: `The username ${credentials.Username} is not registered.` })
 
         const correct_password = await _comparePasswords(credentials.Password, found[0].Password)
         if (correct_password) {
