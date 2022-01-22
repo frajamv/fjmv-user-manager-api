@@ -405,6 +405,14 @@ controller.authenticate = async(req, res) => {
             where: {
                 Username: credentials.Username,
                 State: 1
+            },
+            include: { // Bring related 'roles' rows.
+                model: Role,
+                attributes: ['Id', 'Description'], // Only need the role 'Description' field.
+                include: {
+                    model: Permission,
+                    attributes: ['Title', 'Details'],
+                }
             }
         })
 
@@ -423,9 +431,21 @@ controller.authenticate = async(req, res) => {
                     expiresIn: '300s',
                 }
             );
+
+            user = parseSQLData(found[0])
+
+            const roles = user.roles
+            user.roles = roles.map(r => r.Description)
+            user.roles_array = roles.map(r => {
+                return {
+                    Description: r.Description,
+                    permissions: r.permissions.map(rp => rp.Title + '-$-' + rp.Details)
+                }
+            })
+
             const payload = {
                 status: 'Welcome back!',
-                user: found[0],
+                user: user,
                 token: token
             }
 
