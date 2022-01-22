@@ -424,12 +424,16 @@ controller.authenticate = async(req, res) => {
                 }
             );
             const payload = {
-                status: 'OK',
+                status: 'Welcome back!',
                 token: token
             }
 
             _createUserLog('Login', found[0].Id)
             return parseSuccessOK(res, payload)
+        }
+
+        const payload = {
+            status: 'Wrong password.',
         }
 
         return parseError(res, 400, "Wrong password.")
